@@ -1,0 +1,38 @@
+:root {
+  --bkgr: #eee;
+  --text: hsl(0, 50%, 50%);
+  --border: hsl(40, 100%, 27%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bkgr);
+  font-family: 'Open Sans', Arial, 'Helvetica Neue', Helvetica, sans-serif;
+}
+
+h1 {
+  color: var(--text);
+  text-align: center;
+}
+
+#game-grid {
+  margin: 50px auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 2px;
+  width: 620px;
+}
+
+.game-cell {
+  align-items: center;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  display: grid;
+  font-size: 64px;
+  height: 140px;
+  justify-content: center;
+  width: 150px;
+}
