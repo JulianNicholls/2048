@@ -8,7 +8,6 @@ function blankGrid() {
 }
 
 function addNumbers(grid) {
-  console.log('zeros:', zeros(grid));
   for (let i = 0; i < Math.min(zeros(grid), 2); ++i) {
     let done = false;
 
