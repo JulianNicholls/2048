@@ -39,7 +39,7 @@ function addNumber(grid) {
       const c = randomInt(0, 3);
 
       if (grid[r][c] === 0) {
-        grid[r][c] = Math.random() > 0.9 ? 256 : 128;     // 4 : 2;
+        grid[r][c] = Math.random() > 0.9 ? 4 : 2;
         done = true;
       }
     }
