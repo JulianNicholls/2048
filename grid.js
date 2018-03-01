@@ -3,12 +3,22 @@ let grid = blankGrid();
 const LEFT = -1;
 const RIGHT = 1;
 
+let busy = false;
+
 function blankGrid() {
   return new Array(4).fill().map(() => new Array(4).fill(0));
 }
 
-function addNumbers(grid) {
-  for (let i = 0; i < Math.min(zeros(grid), 2); ++i) {
+function addNumber(grid) {
+  const state = check_grid(grid);
+  console.log(state);
+
+  if (state.won) {
+    console.log('You won');
+    return;
+  }
+
+  if (state.zeros > 0) {
     let done = false;
 
     while (!done) {
@@ -21,12 +31,49 @@ function addNumbers(grid) {
       }
     }
   }
+  else if (state.lost) {
+    console.log('You lost');
+  }
 }
 
-function zeros(grid) {
-  return grid.reduce((acc, row) => {
-    return acc + row.filter(col => col == 0).length;
-  }, 0);
+function check_grid(grid) {
+  let zeros = 0;    // Count of empty cells
+  let won = false;  // Assume we haven't won
+  let lost = true;  // Assume no matching neighbours
+
+  for (let r = 0; r < 4; ++r) {
+    for (let c = 0; c < 4; ++c) {
+      const value = grid[r][c];
+
+      if (value === 0) zeros++;
+
+      if (value === 2048) {
+        won = true;
+        break;
+      }
+
+      if (lost && neighbours(grid, r, c).includes(value)) {
+        lost = false;
+      }
+    }
+  }
+
+  return {
+    zeros, won, lost
+  };
+}
+
+// Check the neighbours in the four cardinal directions
+function neighbours(grid, r, c) {
+  const neighbours = [];
+
+  if (c > 0) neighbours.push(grid[r][c - 1]);
+  if (c < 3) neighbours.push(grid[r][c + 1]);
+
+  if (r > 0) neighbours.push(grid[r - 1][c]);
+  if (r < 3) neighbours.push(grid[r + 1][c]);
+
+  return neighbours;
 }
 
 function slideRight(grid) {
@@ -101,7 +148,7 @@ function redraw(grid) {
 
         cell.textContent = valueStr;
         cell.style.fontSize = sizes[valueStr.length - 1] + 'px';
-        cell.style.background = `hsl(176, 77%, ${99 - log * 6}%)`;
+        cell.style.background = `hsl(${176 + log * 5}, 77%, ${36 + log * 6}%)`;
       } else {
         cell.textContent = '';
         cell.style.background = 'none';
@@ -112,6 +159,8 @@ function redraw(grid) {
 
 function keyPressed(event) {
   let moved = true;
+
+  if (busy) return;
 
   switch (event.code) {
     case 'ArrowDown':
@@ -136,11 +185,13 @@ function keyPressed(event) {
   }
 
   if (moved) {
+    busy = true;
     redraw(grid);
     setTimeout(() => {
-      addNumbers(grid);
+      addNumber(grid);
       redraw(grid);
-    }, 700);
+      busy = false;
+    }, 600);
   }
 }
 
@@ -148,6 +199,7 @@ function randomInt(low, high) {
   return Math.floor(Math.random() * (high - low + 1)) + low;
 }
 
-addNumbers(grid);
+addNumber(grid);
+addNumber(grid);
 redraw(grid);
 document.body.addEventListener('keydown', keyPressed);
