@@ -12,6 +12,9 @@
 
 <body>
   <h1>2048</h1>
+  <div id="score-holder">Score:
+    <span id="score">0</span>
+  </div>
 
   <div id="game-grid">
     <div id="0-0" class="game-cell"></div>
@@ -30,7 +33,12 @@
     <div id="3-1" class="game-cell"></div>
     <div id="3-2" class="game-cell"></div>
     <div id="3-3" class="game-cell"></div>
+    <div id="result">
+      <span>You won!</span>
+      <button onclick="start()">Restart</button>
+    </div>
   </div>
+
 
   <script src="grid.js"></script>
 </body>

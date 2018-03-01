@@ -15,14 +15,26 @@ body {
 
 h1 {
   color: var(--text);
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 64px;
+  margin-bottom: 0;
   text-align: center;
 }
 
+div#score-holder {
+  color: var(--text);
+  font-size: 48px;
+  float: right;
+  width: 7em;
+}
+
 #game-grid {
-  margin: 50px auto;
+  clear: both;
+  margin: 100px auto 0 auto;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 2px;
+  position: relative;
   width: 620px;
 }
 
@@ -32,7 +44,34 @@ h1 {
   border-radius: 10px;
   display: grid;
   font-size: 64px;
-  height: 140px;
+  height: 150px;
   justify-content: center;
   width: 150px;
+}
+
+#result {
+  border: 3px solid black;
+  border-radius: 10px;
+  display: none;
+  height: 400px;
+  left: 40px;
+  padding-top: 90px;
+  font-size: 72px;
+  position: absolute;
+  text-align: center;
+  top: 110px;
+  width: 540px;
+  z-index: 2;
+}
+
+#result button {
+  background: white;
+  border: 2px solid black;
+  border-radius: 5px;
+  color: #008;
+  font-size: 20px;
+  margin: 40px auto;
+  padding: 10px 0;
+  width: 12em;
+  z-index: 3;
 }

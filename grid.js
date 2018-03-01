@@ -1,20 +1,33 @@
-let grid = blankGrid();
-
 const LEFT = -1;
 const RIGHT = 1;
 
-let busy = false;
+let grid, busy, score;
+
+const scoreSpan = document.getElementById('score');
+const resultDiv = document.getElementById('result');
+document.body.addEventListener('keydown', keyPressed);
+
+function start() {
+  grid = blankGrid();
+  busy = false;
+  score = 0;
+
+  resultDiv.style.display = 'none';
+
+  addNumber(grid);
+  addNumber(grid);
+  redraw(grid);
+}
 
 function blankGrid() {
   return new Array(4).fill().map(() => new Array(4).fill(0));
 }
 
 function addNumber(grid) {
-  const state = check_grid(grid);
-  console.log(state);
+  let state = check_grid(grid);
 
   if (state.won) {
-    console.log('You won');
+    setResult('You Won!', 'hsl(120, 50%, 70%)', 'hsl(120, 50%, 20%)');
     return;
   }
 
@@ -26,13 +39,16 @@ function addNumber(grid) {
       const c = randomInt(0, 3);
 
       if (grid[r][c] === 0) {
-        grid[r][c] = Math.random() > 0.9 ? 4 : 2;
+        grid[r][c] = Math.random() > 0.9 ? 256 : 128;     // 4 : 2;
         done = true;
       }
     }
+
+    state = check_grid(grid);
   }
-  else if (state.lost) {
-    console.log('You lost');
+
+  if (state.zeros === 0 && state.lost) {
+    setResult('Try again', 'hsl(0, 70%, 30%)', 'hsl(0, 70%, 80%)');
   }
 }
 
@@ -97,6 +113,7 @@ function slideRight(grid) {
     for (let c = 3; c > 0; --c) {
       if (slidGrid[r][c] === slidGrid[r][c - 1]) {
         slidGrid[r][c] *= 2;
+        score += slidGrid[r][c];
         slidGrid[r][c - 1] = 0;
       }
     }
@@ -148,13 +165,15 @@ function redraw(grid) {
 
         cell.textContent = valueStr;
         cell.style.fontSize = sizes[valueStr.length - 1] + 'px';
-        cell.style.background = `hsl(${176 + log * 5}, 77%, ${36 + log * 6}%)`;
+        cell.style.background = `hsl(${160 + log * 6}, 77%, ${36 + log * 5}%)`;
       } else {
         cell.textContent = '';
         cell.style.background = 'none';
       }
     }
   }
+
+  scoreSpan.textContent = score.toString();
 }
 
 function keyPressed(event) {
@@ -195,11 +214,17 @@ function keyPressed(event) {
   }
 }
 
+function setResult(text, bg, fg) {
+  busy = true;
+
+  resultDiv.querySelector('span').textContent = text;
+  resultDiv.style.background = bg;
+  resultDiv.style.color = fg;
+  resultDiv.style.display = 'block';
+}
+
 function randomInt(low, high) {
   return Math.floor(Math.random() * (high - low + 1)) + low;
 }
 
-addNumber(grid);
-addNumber(grid);
-redraw(grid);
-document.body.addEventListener('keydown', keyPressed);
+start();
