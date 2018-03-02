@@ -62,8 +62,7 @@ function check_grid(grid) {
       const value = grid[r][c];
 
       if (value === 0) zeros++;
-
-      if (value === 2048) {
+      else if (value === 2048) {
         won = true;
         break;
       }
@@ -74,9 +73,7 @@ function check_grid(grid) {
     }
   }
 
-  return {
-    zeros, won, lost
-  };
+  return { zeros, won, lost };
 }
 
 // Check the neighbours in the four cardinal directions
@@ -107,6 +104,10 @@ function slideRight(grid) {
     return row;
   };
 
+  // For each row:
+  //  close it up at the right-hand end
+  //  Colaesce any adjacent numbers, make the left one 0
+  //  Close up to the right again
   for (let r = 0; r < 4; ++r) {
     slidGrid[r] = closeUp(grid[r]);
 
@@ -124,6 +125,8 @@ function slideRight(grid) {
   return slidGrid;
 }
 
+// Rotate the grid to the right or left, this allows
+// slide right to act in any direction
 function rotate(grid, dir = RIGHT) {
   const rotGrid = blankGrid();
 
@@ -139,6 +142,10 @@ function rotate(grid, dir = RIGHT) {
   return rotGrid;
 }
 
+// Miror the grid left to right, much faster than rotating
+// twice.
+// Mirroring and rotating twice do NOT make the same grid, 
+// but the difference is immaterial in this case.
 function mirror(grid) {
   const mGrid = blankGrid();
 
@@ -160,7 +167,7 @@ function redraw(grid) {
       const cell = document.getElementById(`${r}-${c}`);
 
       if (value !== 0) {
-        const log = Math.log(value) / Math.log(2);
+        const log = Math.log(value) / Math.log(2);  // log base 2 of the content
         const valueStr = value.toString();
 
         cell.textContent = valueStr;
@@ -179,22 +186,28 @@ function redraw(grid) {
 function keyPressed(event) {
   let moved = true;
 
+  // If we are in the middle of the pause before inserting a new number,
+  // or the same is finished, ignore the keyboard
   if (busy) return;
 
   switch (event.code) {
     case 'ArrowDown':
+      // Rotate down direction to the right
       grid = rotate(slideRight(rotate(grid, LEFT)), RIGHT);
       break;
 
     case 'ArrowLeft':
+      // Mirror the grid, so slide goes left effectively
       grid = mirror(slideRight(mirror(grid)));
       break;
 
     case 'ArrowUp':
+      // Rotate up direction to the right
       grid = rotate(slideRight(rotate(grid, RIGHT)), LEFT);
       break;
 
     case 'ArrowRight':
+      // Simple slide right
       grid = slideRight(grid);
       break;
 
@@ -204,12 +217,12 @@ function keyPressed(event) {
   }
 
   if (moved) {
-    busy = true;
+    busy = true;    // We're busy (waiting) 
     redraw(grid);
     setTimeout(() => {
       addNumber(grid);
       redraw(grid);
-      busy = false;
+      busy = false;   // Finished insert and re-render
     }, 600);
   }
 }
