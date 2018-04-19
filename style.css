@@ -51,7 +51,7 @@ div#score-holder {
 
 #result {
   border: 3px solid black;
-  border-radius: 10px;
+  border-radius: 12px;
   display: none;
   height: 400px;
   left: 40px;
@@ -67,7 +67,7 @@ div#score-holder {
 #result button {
   background: white;
   border: 2px solid black;
-  border-radius: 5px;
+  border-radius: 8px;
   color: #008;
   font-size: 20px;
   margin: 40px auto;
