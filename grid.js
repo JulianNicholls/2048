@@ -5,6 +5,7 @@ let grid, busy, score;
 
 const scoreSpan = document.getElementById('score');
 const resultDiv = document.getElementById('result');
+
 document.body.addEventListener('keydown', keyPressed);
 
 function start() {
@@ -53,9 +54,9 @@ function addNumber(grid) {
 }
 
 function check_grid(grid) {
-  let zeros = 0;    // Count of empty cells
-  let won = false;  // Assume we haven't won
-  let lost = true;  // Assume no matching neighbours
+  let zeros = 0; // Count of empty cells
+  let won = false; // Assume we haven't won
+  let lost = true; // Assume no matching neighbours
 
   for (let r = 0; r < 4; ++r) {
     for (let c = 0; c < 4; ++c) {
@@ -144,7 +145,7 @@ function rotate(grid, dir = RIGHT) {
 
 // Miror the grid left to right, much faster than rotating
 // twice.
-// Mirroring and rotating twice do NOT make the same grid, 
+// Mirroring and rotating twice do NOT make the same grid,
 // but the difference is immaterial in this case.
 function mirror(grid) {
   const mGrid = blankGrid();
@@ -167,7 +168,7 @@ function redraw(grid) {
       const cell = document.getElementById(`${r}-${c}`);
 
       if (value !== 0) {
-        const log = Math.log(value) / Math.log(2);  // log base 2 of the content
+        const log = Math.log(value) / Math.log(2); // log base 2 of the content
         const valueStr = value.toString();
 
         cell.textContent = valueStr;
@@ -217,12 +218,12 @@ function keyPressed(event) {
   }
 
   if (moved) {
-    busy = true;    // We're busy (waiting) 
+    busy = true; // We're busy (waiting)
     redraw(grid);
     setTimeout(() => {
       addNumber(grid);
       redraw(grid);
-      busy = false;   // Finished insert and re-render
+      busy = false; // Finished insert and re-render
     }, 600);
   }
 }

@@ -16,14 +16,14 @@ body {
 h1 {
   color: var(--text);
   font-family: Georgia, 'Times New Roman', Times, serif;
-  font-size: 64px;
+  font-size: 48px;
   margin-bottom: 0;
   text-align: center;
 }
 
 div#score-holder {
   color: var(--text);
-  font-size: 48px;
+  font-size: 32px;
   float: right;
   width: 7em;
 }
@@ -35,7 +35,7 @@ div#score-holder {
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 2px;
   position: relative;
-  width: 620px;
+  width: 500px;
 }
 
 .game-cell {
@@ -44,9 +44,9 @@ div#score-holder {
   border-radius: 10px;
   display: grid;
   font-size: 64px;
-  height: 150px;
+  height: 120px;
   justify-content: center;
-  width: 150px;
+  width: 120px;
 }
 
 #result {
